@@ -26,5 +26,18 @@ public class DeleteController extends HttpServlet {
 
         response.sendRedirect("/member/listMembers.do");
     }
+
+    @Override
+    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        String id = request.getParameter("id");
+
+        try {
+            memberService.delete(id);
+        } catch (Exception e) {
+            throw new ServletException("remove err");
+        }
+
+        response.sendRedirect("/member/listMembers.do");
+    }
 }
 // 왜 여기선 get?

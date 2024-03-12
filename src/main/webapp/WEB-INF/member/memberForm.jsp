@@ -5,7 +5,7 @@
   Time: 오후 4:27
   To change this template use File | Settings | File Templates.
 --%>
-<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <!DOCTYPE html>
 <html lang="ko">
 <head>
@@ -13,10 +13,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>회원가입</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
     <style>
         body {
             background-color: #f8f9fa;
         }
+
         .container {
             max-width: 400px;
             margin: 100px auto;
@@ -25,16 +28,20 @@
             border-radius: 10px;
             box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
         }
+
         .form-group {
             margin-bottom: 20px;
         }
+
         .form-group label {
             font-weight: bold;
         }
+
         .btn-group {
             display: flex;
             justify-content: center;
         }
+
         .btn-primary, .btn-secondary {
             padding: 10px;
             font-size: 16px;
@@ -43,22 +50,39 @@
             color: #fff;
             border: none;
         }
+
         .btn-primary:hover, .btn-secondary:hover {
             background-color: #495057;
         }
     </style>
+    <script>
+        function pwCheck() {
+            if ($('#password').val() == $('#passwordCheck').val()) {
+                $('#passwordCheckMessage').text('비밀번호가 일치합니다.').css('color', 'green');
+                $('button[type="submit"]').prop('disabled', false);
+            } else {
+                $('#passwordCheckMessage').text('비밀번호가 일치하지 않습니다.').css('color', 'red');
+                $('button[type="submit"]').prop('disabled', true);
+            }
+        }
+    </script>
 </head>
 <body>
 <div class="container">
     <h2 class="text-center mb-4">회원가입</h2>
     <form action="/member/addMember.do" method="post">
-    <div class="form-group">
+        <div class="form-group">
             <label for="id">아이디</label>
             <input type="text" class="form-control" id="id" name="id" required>
         </div>
         <div class="form-group">
             <label for="password">비밀번호</label>
             <input type="password" class="form-control" id="password" name="password" required>
+        </div>
+        <div class="form-group">
+            <label for="passwordCheck">비밀번호 확인</label>
+            <input type="password" class="form-control" id="passwordCheck" name="passwordCheck" onkeyup="pwCheck()">
+            <div id="passwordCheckMessage" style="color: red;"></div>
         </div>
         <div class="form-group">
             <label for="name">이름</label>

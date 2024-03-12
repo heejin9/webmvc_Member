@@ -30,9 +30,12 @@ public class ModifyController extends HttpServlet {
                     .email(email)
                     .build());
 
-            response.sendRedirect("/member/listMembers.do");
+//            response.sendRedirect("/member/listMembers.do");
+
         } catch (Exception e) {
             throw new ServletException("modify err");
+        } finally {
+            response.sendRedirect("/member/listMembers.do");
         }
     }
 }

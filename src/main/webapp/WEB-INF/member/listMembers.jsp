@@ -89,17 +89,24 @@
         <tbody>
         <!-- 여기에 회원 정보를 동적으로 추가 -->
         <c:forEach items="${dtoList}" var="dto">
-            <tr>
-                <td>${dto.id}</td>
-                <td>${dto.password}</td>
-                <td>${dto.name}</td>
-                <td>${dto.email}</td>
-                <td>${dto.regDate}</td>
-                <td><a href="#" class="modifyBtn" data-id="${dto.id}" data-toggle="modal"
-                       data-target="#modifyModal">수정</a></td>
-                <td><a href="/member/delMember.do?id=${dto.id}">삭제</a></td>
-            </tr>
-        </c:forEach>
+        <tr>
+            <td>${dto.id}</td>
+            <td>${dto.password}</td>
+            <td>${dto.name}</td>
+            <td>${dto.email}</td>
+            <td>${dto.regDate}</td>
+            <td><a href="#" class="modifyBtn" data-id="${dto.id}" data-password="${dto.password}"
+                   data-name="${dto.name}" data-email="${dto.email}" data-toggle="modal"
+                   data-target="#modifyModal">수정</a></td>
+            <td><a href="/member/delMember.do?id=${dto.id}">삭제</a></td>
+                <%--                <td>--%>
+                <%--                    <form action="/member/delMember.do" method="post">--%>
+                <%--                        <input type="text" name="id" value="${dto.id}" hidden>--%>
+                <%--                        <button style="background: #ffffff; border: #ffffff; color:blue" type="submit">삭제</button>--%>
+                <%--                    </form>--%>
+                <%--                </td>--%>
+                <%--            </tr>--%>
+            </c:forEach>
         </tbody>
     </table>
     <div class="btn-group text-center">
@@ -119,12 +126,14 @@
                 </button>
             </div>
             <div class="modal-body">
+                <%--                <form id="modifyForm" action="/member/modifyMember.do" method="post">--%>
                 <!-- 수정할 정보 입력 폼 -->
-                <form id="modifyForm" action="/member/modifyMember.do" method="post">
+                <form id="modifyForm" action="/member/modMember.do" method="post">
                     <input type="hidden" id="modifyId" name="id" value="">
                     <div class="form-group">
                         <label for="modifyPassword">비밀번호</label>
-                        <input type="password" class="form-control" id="modifyPassword" name="password" required>
+                        <input type="password" class="form-control" id="modifyPassword" name="password" value=""
+                               required>
                     </div>
                     <div class="form-group">
                         <label for="modifyName">이름</label>
@@ -134,10 +143,10 @@
                         <label for="modifyEmail">이메일</label>
                         <input type="email" class="form-control" id="modifyEmail" name="email" required>
                     </div>
-                    <div class="btn-group text-center">
-                        <a href="/member/listMembers.do" class="btn btn-primary">수정 완료</a>
+                    <div class="btn-group text-center form-group">
+                        <%--                        <a href="/member/listMembers.do" class="btn btn-primary">수정 완료</a>--%>
+                        <button type="submit" class="btn btn-primary">수정 완료</button>
                     </div>
-                    <%--                    <button type="submit" class="btn btn-primary">수정 완료</button>--%>
                 </form>
             </div>
         </div>
@@ -150,31 +159,20 @@
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 <script>
     $(document).ready(function () {
-        // 수정 폼 제출 시
-        $('#modifyForm').on('submit', function (event) {
-            // 기본 이벤트 제거
-            event.preventDefault();
+        $('.modifyBtn').on('click', function () {
+            var id = $(this).data('id');
+            var password = $(this).data('password');
+            var name = $(this).data('name');
+            var email = $(this).data('email');
 
-            // 폼 데이터 가져오기
-            var formData = $(this).serialize();
-
-            // AJAX 요청 보내기
-            $.ajax({
-                type: 'POST',
-                url: '/member/modifyMember.do', // ModifyController URL
-                data: formData,
-                success: function (response) {
-                    // 회원 목록 페이지로 리다이렉트
-                    window.location.href = '/member/listMembers.do';
-                },
-                error: function (xhr, status, error) {
-                    // 오류 처리
-                    console.error(error);
-                    alert('수정에 실패했습니다.');
-                }
-            });
+            $('#modifyId').val(id);
+            $('#modifyPassword').val(password);
+            $('#modifyName').val(name);
+            $('#modifyEmail').val(email);
         });
     });
+
+
 </script>
 </body>
 </html>

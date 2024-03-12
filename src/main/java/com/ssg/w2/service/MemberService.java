@@ -22,17 +22,21 @@ public enum MemberService {
     //객체 생성 및 초기화
     MemberService() {
         memberDAO = new MemberDAO();
+        // MapperUtil을 통해 ModelMapper 객체를 가져와 modelMapper 변수에 할당
         modelMapper = MapperUtil.INSTANCE.get();
     }
 
     public List<MemberDTO> listAll() throws Exception {
+        // MemberDAO를 통해 모든 회원 정보를 가져옴
         List<MemberVO> voList = memberDAO.listMembers();
+        // 가져온 MemberVO 리스트를 MemberDTO 리스트로 변환하여 반환
         List<MemberDTO> dtoList = voList.stream().map(vo -> modelMapper.map(vo, MemberDTO.class)).collect(Collectors.toList());
         return dtoList;
     }
 
     public void register(MemberDTO memberDTO) throws Exception {
         MemberVO vo = modelMapper.map(memberDTO, MemberVO.class);
+        // 변환된 MemberVO를 이용하여 회원 등록
         log.info(vo);
         memberDAO.memberinsert(vo);
     }

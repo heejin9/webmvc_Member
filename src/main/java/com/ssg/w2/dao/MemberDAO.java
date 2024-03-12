@@ -64,7 +64,7 @@ public class MemberDAO {
     }
 
     public void update(MemberVO memberVO) throws Exception {
-        String sql = "UPDATE mvc_member SET password = ?, name = ?, email = ?, regdate =? WHERE id = ?";
+        String sql = "UPDATE mvc_member SET password = ?, name = ?, email = ?, regdate = now() WHERE id = ?";
 
         @Cleanup Connection conn = ConnectionUtil.INSTANCE.getConnection();
         @Cleanup PreparedStatement pstmt = conn.prepareStatement(sql);
@@ -72,8 +72,7 @@ public class MemberDAO {
         pstmt.setString(1, memberVO.getPassword());
         pstmt.setString(2, memberVO.getName());
         pstmt.setString(3, memberVO.getEmail());
-        pstmt.setDate(4, Date.valueOf(memberVO.getRegDate()));
-        pstmt.setString(5, memberVO.getId());
+        pstmt.setString(4, memberVO.getId());
 
         pstmt.executeUpdate();
 
